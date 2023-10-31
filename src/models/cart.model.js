@@ -6,6 +6,6 @@ const productSchema = new mongoose.Schema({
 })
 const cartSchema = new mongoose.Schema({
     products: { type: [productSchema] }
-});
+}, { timestamps: true });
 
 export default mongoose.model('Cart', cartSchema);

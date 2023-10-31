@@ -9,6 +9,6 @@ const productSchema = new mongoose.Schema({
     stock: { type: Number, required: true },
     category: { type: String, required: true },
     thumbnails: { type: [String], default: [] }
-});
+}, { timestamps: true });
 
 export default mongoose.model('Product', productSchema);

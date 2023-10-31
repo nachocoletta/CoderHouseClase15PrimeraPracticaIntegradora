@@ -9,6 +9,7 @@ import indexRouter from './routers/index.router.js';
 import productsApiRouter from './routers/api/products.router.js'
 // import productsViewRouter from './routers/views/products.router.js'
 import cartsApiRouter from './routers/api/carts.router.js'
+import products from './routers/views/products.router.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productsApiRouter);
 app.use('/api/carts', cartsApiRouter);
+app.use('/products', products);
 
 app.use('/', indexRouter);
 

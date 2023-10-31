@@ -30,6 +30,7 @@ export default class ProductManager {
     }
 
     static async updateById(pid, data) {
+        console.log(`id ${pid} data ${data}`)
         const product = await ProductModel.findById(pid);
         if (!product) {
             throw new Exception('No existe el producto', 404);
