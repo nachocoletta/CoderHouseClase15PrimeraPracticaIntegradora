@@ -1,18 +1,16 @@
 (function () {
     const socket = io();
 
+    // FORM PRODUCTS
+
     // form - products
     const formAddProduct = document.getElementById('form-add-product')
-    // const deleteProduct = document.getElementById('btn-delete-product')
     const formDeleteProduct = document.getElementById('form-delete-product')
-
     const formUpdateProduct = document.getElementById('form-update-product');
 
     formAddProduct?.addEventListener('submit', (event => {
         event.preventDefault();
-        // const idProduct = document.getElementById('input-id-product').value
-        // console.log(idProduct)
-        // console.log('click en el boton del formulario')
+
         const newProduct = {
             title: document.getElementById('input-title').value,
             description: document.getElementById('input-description').value,
@@ -76,5 +74,36 @@
             container.appendChild(p);
         });
         container.appendChild(document.createElement('hr'))
-    })
+    });
+
+    const formCreateCart = document.getElementById('create-cart')
+    const formAddProductToCart = document.getElementById('add-product-to-cart')
+    const formRemoveProductFromCart = document.getElementById('remove-product-from-cart');
+
+    formCreateCart?.addEventListener('submit', (event => {
+        event.preventDefault();
+        let newCart = {}
+        socket.emit('createCart')
+    }))
+
+    socket.on('listCarts', (carts) => {
+        // console.log('entra a esta mierda')
+        const container = document.getElementById('carts')
+
+        container.innerHTML = "";
+        carts.forEach((cart) => {
+            // console.log("cart", cart)
+            const p = document.createElement('p');
+            p.innerHTML = `<strong>ID Cart:</strong> ${cart._id}<br><strong>Products:</strong><br>`;
+            // p.innerHTML += ``;
+            cart.products?.map((prod) => {
+                p.innerHTML += `<strong>productId:</strong> ${prod.productId} <strong>quantity:</strong> ${prod.quantity}<br>`
+            })
+            const hr = document.createElement('hr');
+            container.appendChild(hr);
+            container.appendChild(p);
+        });
+        container.appendChild(document.createElement('hr'))
+    });
+
 })();

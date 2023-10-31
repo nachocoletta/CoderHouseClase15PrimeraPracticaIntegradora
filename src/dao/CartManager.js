@@ -15,9 +15,9 @@ export default class CartManager {
         return cart;
     }
 
-    static async create() {
+    static async create(newCart = {}) {
         try {
-            const cart = await CartModel.create({})
+            const cart = await CartModel.create(newCart)
             return cart;
         } catch (error) {
             console.error('Error al crear el carrito', error.message)

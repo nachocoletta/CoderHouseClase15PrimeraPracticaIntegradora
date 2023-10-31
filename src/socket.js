@@ -7,6 +7,7 @@ import ProductManager from './dao/ProductManager.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import CartManager from './dao/CartManager.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,6 +32,10 @@ export const init = async (httpServer) => {
             const products = await ProductManager.get()
             socketClient.emit('listProducts', products)
 
+            const carts = await CartManager.get();
+
+            socketClient.emit('listCarts', carts)
+
             socketClient.on('addProduct', async (newProduct) => {
                 await ProductManager.create(newProduct);
                 let products = await ProductManager.get();
@@ -47,6 +52,12 @@ export const init = async (httpServer) => {
                 await ProductManager.updateById(product._id, product)
                 let products = await ProductManager.get();
                 io.emit('listProducts', products)
+            })
+
+            socketClient.on('createCart', async (newCart) => {
+                await CartManager.create(newCart);
+                let carts = await CartManager.get()
+                io.emit('listCarts', carts)
             })
 
             socketClient.on('disconnect', () => {
