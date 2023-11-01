@@ -27,17 +27,19 @@ export default class CartManager {
 
     static async addProductToCart(cartId, productId, quantity) {
         try {
+            // console.log("quantity", quantity)
             const cart = await CartModel.findById(cartId);
-
+            // console.log("cart: ", cart)
             if (!cart) {
                 throw new Exception('No se encontro el carrito', 404)
             }
-            const existingProductIndex = cart.products.findIndex(
-                (product) => product.productId === productId
-            );
 
+            const existingProductIndex = cart.products.findIndex(
+                (product) => String(product.productId) === String(productId)
+            );
+            // console.log(existingProductIndex);
             if (existingProductIndex !== -1) {
-                cart.products[existingProductIndex].quantity += quantity
+                cart.products[existingProductIndex].quantity += Number(quantity)
             } else {
                 cart.products.push({ productId, quantity })
             }

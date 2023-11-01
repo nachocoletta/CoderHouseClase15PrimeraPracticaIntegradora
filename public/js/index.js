@@ -78,7 +78,7 @@
 
     const formCreateCart = document.getElementById('create-cart')
     const formAddProductToCart = document.getElementById('add-product-to-cart')
-    const formRemoveProductFromCart = document.getElementById('remove-product-from-cart');
+    const formRemoveCart = document.getElementById('remove-cart');
 
     formCreateCart?.addEventListener('submit', (event => {
         event.preventDefault();
@@ -106,4 +106,29 @@
         container.appendChild(document.createElement('hr'))
     });
 
+    formAddProductToCart?.addEventListener('submit', (event => {
+        event.preventDefault();
+
+        const product = {
+            cartId: document.getElementById('cart-input-id-product-to-cart').value,
+            _id: document.getElementById('input-id-product-to-cart').value,
+            quantity: document.getElementById('input-quantity-product-in-cart').value
+        }
+
+        socket.emit('addProductToCart', product);
+
+        document.getElementById('cart-input-id-product-to-cart').value = ""
+        document.getElementById('input-id-product-to-cart').value = ""
+        document.getElementById('input-quantity-product-in-cart').value = ""
+
+    }))
+
+    formRemoveCart?.addEventListener('submit', (event => {
+        event.preventDefault();
+
+        const cartId = document.getElementById('cart-input-id-product-to-remove').value;
+
+        socket.emit('deleteCart', cartId);
+        document.getElementById('cart-input-id-product-to-remove').value = ''
+    }))
 })();

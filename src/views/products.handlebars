@@ -88,6 +88,9 @@
   <div style="flex: 1;">
     <form id="add-product-to-cart">
       <h2>Add Product to cart</h2>
+      <label for="cart-input-id-product-to-cart">Cart ID:</label>
+      <input type="text" id="cart-input-id-product-to-cart" name="cart-input-id-product-to-cart" required>
+
       <label for="input-id-product-to-cart">Product ID:</label>
       <input type="text" id="input-id-product-to-cart" name="id-product-to-cart" required>
 
@@ -97,11 +100,11 @@
      </form>
   </div>
   <div style="flex: 1;">
-    <form id="remove-product-from-cart">
-      <h2>Remove product from cart</h2>
-      <label for="input-id-product-to-remove">Description:</label>
-      <input type="text" id="input-id-product-to-remove" name="product-to-remove">
-      <button type="submit">Remove</button>
+    <form id="remove-cart">
+      <h2>Remove cart</h2>
+      <label for="cart-input-id-product-to-remove">Cart ID:</label>
+      <input type="text" id="cart-input-id-product-to-remove" name="cart-input-product-to-remove">
+      <button type="submit">Remove Cart</button>
     </form>
   </div>
 </div>

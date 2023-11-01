@@ -1,7 +1,7 @@
 // socket.js
 import { initDb } from './db/mongodb.js'
 import { Server } from 'socket.io';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import ProductManager from './dao/ProductManager.js';
 
 import path from 'path';
@@ -60,6 +60,30 @@ export const init = async (httpServer) => {
                 io.emit('listCarts', carts)
             })
 
+            socketClient.on('addProductToCart', async (product) => {
+                // console.log(product)
+                try {
+                    let findedProduct = await ProductManager.getById(product._id)
+                    // console.log("findedProduct", findedProduct);
+                    if (findedProduct) {
+                        await CartManager.addProductToCart(product.cartId, findedProduct._id, product.quantity)
+                        let carts = await CartManager.get()
+                        io.emit('listCarts', carts)
+                    } else {
+                        console.log('Product not found')
+                    }
+                }
+                catch (error) {
+                    console.log('error: ', error.message)
+                }
+                // console.log(findedProduct);
+            })
+
+            socketClient.on('deleteCart', async (cartId) => {
+                await CartManager.deleteById(cartId);
+                let carts = await CartManager.get()
+                io.emit('listCarts', carts)
+            })
             socketClient.on('disconnect', () => {
                 console.log(`Se ha desconectado el cliente con id ${socketClient.id}`)
             })
