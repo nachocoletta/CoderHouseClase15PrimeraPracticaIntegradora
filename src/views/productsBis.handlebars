@@ -1,7 +1,6 @@
-<div>
-  <h1>Products</h1>
-  
-  
+<h1>Productos</h1>
+
+<article>
     <div style="display: flex; flex-direction: row; justify-content: space-between;">
         <!-- Columna 1 -->
         <div style="flex: 1;">
@@ -64,50 +63,34 @@
           </form>
         </div>
     </div>
-</div>
+</article>
 
+<article>
+    <h1>Products</h1>
+    <table id="main">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Code</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+        </tr>
+        {{#each products}}
+        <tr>
+            <td>{{this._id}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.code}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.stock}}</td>
+            <td>{{this.category}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</article>
 
-<h1>Products in Real Time</h1>
-<div id="log-products-in-real-time">
-</div>
-
-
-
-<h1>Carts</h1>
-<div style="display: flex; flex-direction: row; justify-content: space-between;">
-  <div style="flex: 1;">
-    <form id="create-cart">
-      <h2>Create Cart</h2>
-      <button type="submit">Create Cart</button>
-    </form>
-  </div>
-  <div style="flex: 1;">
-    <form id="add-product-to-cart">
-      <h2>Add Product to cart</h2>
-      <label for="cart-input-id-product-to-cart">Cart ID:</label>
-      <input type="text" id="cart-input-id-product-to-cart" name="cart-input-id-product-to-cart" required>
-
-      <label for="input-id-product-to-cart">Product ID:</label>
-      <input type="text" id="input-id-product-to-cart" name="id-product-to-cart" required>
-
-      <label for="input-quantity-product-in-cart">Quantity:</label>
-      <input type="text" id="input-quantity-product-in-cart" name="quantity-product-in-cart">
-      <button type="submit">Add</button>
-     </form>
-  </div>
-  <div style="flex: 1;">
-    <form id="remove-cart">
-      <h2>Remove cart</h2>
-      <label for="cart-input-id-product-to-remove">Cart ID:</label>
-      <input type="text" id="cart-input-id-product-to-remove" name="cart-input-product-to-remove">
-      <button type="submit">Remove Cart</button>
-    </form>
-  </div>
-</div>
-
-<div id="carts">
-</div>
-  
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

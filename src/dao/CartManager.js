@@ -68,4 +68,6 @@ export default class CartManager {
         await CartModel.deleteOne(criteria)
         console.log('Carrito eliminado correctamente')
     }
+
+
 } 

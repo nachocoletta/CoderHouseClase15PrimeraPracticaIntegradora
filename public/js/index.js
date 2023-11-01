@@ -1,5 +1,81 @@
 (function () {
+    let username;
+
     const socket = io();
+
+
+    // CHAT
+
+    const formMessage = document.getElementById('form-message');
+    // input-message
+    const inputMessage = document.getElementById('input-message');
+    // log-messages
+    const logMessages = document.getElementById('log-messages');
+
+    formMessage.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        // console.log("message", message);
+        const message = inputMessage.value;
+        socket.emit('new-message', { username, message });
+        // console.log('Nuevo mensaje enviado', { username, text });
+        inputMessage.value = '';
+        inputMessage.focus();
+    })
+
+    function updateLogMessages(messages) {
+        console.log('messages', messages);
+        logMessages.innerText = '';
+        messages.forEach((msg) => {
+            const p = document.createElement('p');
+            p.innerText = `${msg.username}: ${msg.message}`;
+            logMessages.appendChild(p);
+        });
+    }
+
+    socket.on('notification', (messages) => {
+        // console.log("messages", messages);
+        updateLogMessages(messages);
+    });
+
+    socket.on('listMessages', (messages) => {
+        updateLogMessages(messages);
+    })
+
+    socket.on('new-message-from-api', (message) => {
+        console.log('new-message-from-api ->', message);
+    });
+
+    socket.on('new-client', () => {
+        Swal.fire({
+            text: 'Nuevo usuario conectado 🤩',
+            toast: true,
+            position: "top-right",
+        });
+    });
+
+    Swal.fire({
+        title: 'Identificate por favor 👮',
+        input: 'text',
+        inputLabel: 'Ingresa tu email',
+        allowOutsideClick: false,
+        inputValidator: (value) => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                return 'Ingresa un email válido.';
+            }
+            // if (!value) {
+            //     return 'Necesitamos que ingreses un username para continuar!';
+            // }
+        },
+    })
+        .then((result) => {
+            username = result.value.trim();
+            Swal.fire({
+                title: `Bienvenido ${username}`
+            })
+            console.log(`Hola ${username}, bienvenido 🖐️`);
+        })
 
     // FORM PRODUCTS
 
@@ -65,16 +141,56 @@
     socket.on('listProducts', (products) => {
         const container = document.getElementById('log-products-in-real-time')
 
+        // Limpiar el contenido previo
         container.innerHTML = "";
-        products.forEach((prod) => {
-            const p = document.createElement('p');
-            p.innerText = `ID: ${prod._id} - Title: ${prod.title} - Description: ${prod.description} - Code: ${prod.code} - Price: $${prod.price} - Stock: ${prod.stock} - Category: ${prod.category}`;
-            const hr = document.createElement('hr')
-            container.appendChild(hr)
-            container.appendChild(p);
+
+        // Crear la tabla
+        const table = document.createElement('table');
+        table.classList.add('product-table');
+
+        // Crear la fila de encabezados
+        const headerRow = document.createElement('tr');
+        const headers = ['ID', 'Title', 'Description', 'Code', 'Price', 'Stock', 'Category'];
+
+        headers.forEach((header) => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
         });
-        container.appendChild(document.createElement('hr'))
+
+        table.appendChild(headerRow);
+
+        // Agregar filas de productos
+        products.forEach((prod) => {
+            const row = document.createElement('tr');
+            const cells = [prod._id, prod.title, prod.description, prod.code, `$${prod.price}`, prod.stock, prod.category];
+
+            cells.forEach((cell) => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                row.appendChild(td);
+            });
+
+            table.appendChild(row);
+        });
+
+        // Agregar la tabla al contenedor
+        container.appendChild(table);
     });
+
+    // socket.on('listProducts', (products) => {
+    //     const container = document.getElementById('log-products-in-real-time')
+
+    //     container.innerHTML = "";
+    //     products.forEach((prod) => {
+    //         const p = document.createElement('p');
+    //         p.innerText = `ID: ${prod._id} - Title: ${prod.title} - Description: ${prod.description} - Code: ${prod.code} - Price: $${prod.price} - Stock: ${prod.stock} - Category: ${prod.category}`;
+    //         const hr = document.createElement('hr')
+    //         container.appendChild(hr)
+    //         container.appendChild(p);
+    //     });
+    //     container.appendChild(document.createElement('hr'))
+    // });
 
     const formCreateCart = document.getElementById('create-cart')
     const formAddProductToCart = document.getElementById('add-product-to-cart')
@@ -82,14 +198,14 @@
 
     formCreateCart?.addEventListener('submit', (event => {
         event.preventDefault();
-        let newCart = {}
+        // let newCart = {}
         socket.emit('createCart')
     }))
 
     socket.on('listCarts', (carts) => {
         // console.log('entra a esta mierda')
         const container = document.getElementById('carts')
-
+        // console.log("carts", carts)
         container.innerHTML = "";
         carts.forEach((cart) => {
             // console.log("cart", cart)
