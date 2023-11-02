@@ -44,12 +44,7 @@ export default class CartManager {
                 cart.products.push({ productId, quantity })
             }
             const updatedCart = await cart.save();
-            // const productAndQuantity = await CartModel.findByIdAndUpdate(
-            //     cartId,
-            //     { $push: { products: { productId, quantity } } },
-            //     { new: true }
-            // )
-            // return productAndQuantity
+
             return updatedCart;
         } catch (error) {
             console.error("Error", error.message);
