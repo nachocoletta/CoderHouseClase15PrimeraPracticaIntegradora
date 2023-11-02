@@ -131,12 +131,11 @@
     }))
 
     socket.on('listCarts', (carts) => {
-        // console.log('entra a esta mierda')
         const container = document.getElementById('carts')
-        // console.log("carts", carts)
+        console.log("carts", carts)
         container.innerHTML = "";
         carts.forEach((cart) => {
-            // console.log("cart", cart)
+            console.log("cart", cart)
             const p = document.createElement('p');
             p.innerHTML = `<strong>ID Cart:</strong> ${cart._id}<br><strong>Products:</strong><br>`;
             // p.innerHTML += ``;
